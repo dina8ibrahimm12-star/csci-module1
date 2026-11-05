@@ -1,0 +1,19 @@
+CREATE EXTERNAL TABLE IF NOT EXISTS ${database}.vpc_flow_logs (
+  version INT,
+  account_id STRING,
+  interface_id STRING,
+  srcaddr STRING,
+  dstaddr STRING,
+  srcport INT,
+  dstport INT,
+  protocol BIGINT,
+  packets BIGINT,
+  bytes BIGINT,
+  `start` BIGINT,
+  `end` BIGINT,
+  action STRING,
+  log_status STRING
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ' '
+LOCATION 's3://${bucket}/AWSLogs/${account_id}/vpcflowlogs/'
+TBLPROPERTIES ('skip.header.line.count' = '1');

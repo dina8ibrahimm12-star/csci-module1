@@ -1,0 +1,47 @@
+# --- Terraform: state, caches, plans (state can contain sensitive data) ---
+**/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+tfplan*
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+# real variable files (only *.tfvars.example is committed)
+*.tfvars
+*.tfvars.json
+!*.tfvars.example
+# NOTE: .terraform.lock.hcl is intentionally NOT ignored. Commit it after `terraform init`.
+
+# --- AWS credentials / secrets ---
+.aws/
+credentials
+config.json
+*.pem
+*.key
+*.p12
+.env
+.env.*
+*.secret
+*secret*access*
+
+# --- Generated at run time (contain account ids / account data) ---
+snapshots/*.json
+athena/generated/*.sql
+evidence-export/
+*.csv.export
+
+# --- Python / OS / editors ---
+__pycache__/
+*.pyc
+.venv/
+venv/
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

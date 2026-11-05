@@ -1,0 +1,4 @@
+# Copy to terraform.tfvars (git-ignored) only if you need to change a default.
+# region             = "eu-north-1"   # must match your project's Region
+# log_retention_days = 365
+# create_cloudtrail  = true   # set false if the account already has a usable trail

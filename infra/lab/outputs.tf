@@ -1,0 +1,10 @@
+output "account_id" { value = local.account_id }
+output "region" { value = var.region }
+output "queue_url" { value = aws_sqs_queue.changes.url }
+output "dlq_url" { value = aws_sqs_queue.dlq.url }
+output "customer_data_bucket" { value = aws_s3_bucket.customer_data.id }
+output "app_assets_bucket" { value = aws_s3_bucket.app_assets.id }
+output "web_sg_id" { value = aws_security_group.web.id }
+output "web_instance_id" { value = one(aws_instance.web[*].id) }
+output "app_role_name" { value = aws_iam_role.app.name }
+output "discovery_role_arn" { value = aws_iam_role.discovery.arn }

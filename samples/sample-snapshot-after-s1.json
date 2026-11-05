@@ -1,0 +1,163 @@
+{
+  "schema_version": "1.0",
+  "snapshot_id": "00000000-0000-0000-0000-000000000002",
+  "taken_at": "2026-10-25T10:35:00+00:00",
+  "account_id": "123456789012",
+  "region": "eu-north-1",
+  "_note": "SAMPLE (after scenario S1: tcp/22 opened to 0.0.0.0/0). FAKE ids.",
+  "resources": {
+    "vpcs": [
+      {
+        "vpc_id": "vpc-0aaa",
+        "cidr": "10.0.0.0/16",
+        "tags": {
+          "Name": "csci-vpc"
+        }
+      }
+    ],
+    "subnets": [
+      {
+        "subnet_id": "subnet-0aaa",
+        "vpc_id": "vpc-0aaa",
+        "cidr": "10.0.1.0/24",
+        "map_public_ip_on_launch": true,
+        "has_internet_route": true,
+        "tags": {
+          "Name": "csci-public-subnet"
+        }
+      }
+    ],
+    "security_groups": [
+      {
+        "group_id": "sg-0web",
+        "name": "csci-web-sg",
+        "vpc_id": "vpc-0aaa",
+        "tags": {
+          "Name": "csci-web-sg"
+        },
+        "rules": [
+          {
+            "direction": "ingress",
+            "protocol": "tcp",
+            "from_port": 22,
+            "to_port": 22,
+            "cidrs": [
+              "0.0.0.0/0"
+            ],
+            "ipv6_cidrs": [],
+            "source_security_groups": [],
+            "open_to_internet": true
+          },
+          {
+            "direction": "egress",
+            "protocol": "-1",
+            "from_port": null,
+            "to_port": null,
+            "cidrs": [
+              "0.0.0.0/0"
+            ],
+            "ipv6_cidrs": [],
+            "source_security_groups": [],
+            "open_to_internet": true
+          }
+        ]
+      }
+    ],
+    "ec2_instances": [
+      {
+        "instance_id": "i-0web",
+        "name": "web-server",
+        "state": "running",
+        "instance_type": "t3.micro",
+        "public_ip": "203.0.113.10",
+        "private_ip": "10.0.1.25",
+        "subnet_id": "subnet-0aaa",
+        "vpc_id": "vpc-0aaa",
+        "security_group_ids": [
+          "sg-0web"
+        ],
+        "iam_role": "AppRole",
+        "tags": {
+          "Name": "web-server",
+          "Role": "web"
+        },
+        "launch_time": "2026-10-25T09:00:00+00:00"
+      }
+    ],
+    "iam_roles": [
+      {
+        "role_name": "AppRole",
+        "role_arn": "arn:aws:iam::123456789012:role/AppRole",
+        "trust_policy": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "ec2.amazonaws.com"
+              },
+              "Action": "sts:AssumeRole"
+            }
+          ]
+        },
+        "attached_policies": [],
+        "inline_policies": [
+          {
+            "policy_name": "ReadCustomerData",
+            "document": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": "s3:GetObject",
+                  "Resource": "arn:aws:s3:::csci-customer-data-123456789012/*"
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": "s3:ListBucket",
+                  "Resource": "arn:aws:s3:::csci-customer-data-123456789012"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "s3_buckets": [
+      {
+        "bucket_name": "csci-customer-data-123456789012",
+        "tags": {
+          "Sensitivity": "high",
+          "DataClass": "customer-data"
+        },
+        "public_access_block": {
+          "BlockPublicAcls": true,
+          "IgnorePublicAcls": true,
+          "BlockPublicPolicy": true,
+          "RestrictPublicBuckets": true
+        },
+        "policy": null,
+        "policy_is_public": false,
+        "acl_is_public": false,
+        "is_public": false
+      },
+      {
+        "bucket_name": "csci-app-assets-123456789012",
+        "tags": {
+          "Sensitivity": "low",
+          "DataClass": "app-assets"
+        },
+        "public_access_block": {
+          "BlockPublicAcls": true,
+          "IgnorePublicAcls": true,
+          "BlockPublicPolicy": true,
+          "RestrictPublicBuckets": true
+        },
+        "policy": null,
+        "policy_is_public": false,
+        "acl_is_public": false,
+        "is_public": false
+      }
+    ]
+  }
+}

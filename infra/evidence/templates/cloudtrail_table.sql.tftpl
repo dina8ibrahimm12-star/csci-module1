@@ -1,0 +1,45 @@
+CREATE EXTERNAL TABLE IF NOT EXISTS ${database}.cloudtrail_logs (
+  eventversion STRING,
+  useridentity STRUCT<
+    type: STRING, principalid: STRING, arn: STRING, accountid: STRING,
+    invokedby: STRING, accesskeyid: STRING, username: STRING,
+    sessioncontext: STRUCT<
+      attributes: STRUCT<mfaauthenticated: STRING, creationdate: STRING>,
+      sessionissuer: STRUCT<type: STRING, principalid: STRING, arn: STRING, accountid: STRING, username: STRING>
+    >
+  >,
+  eventtime STRING,
+  eventsource STRING,
+  eventname STRING,
+  awsregion STRING,
+  sourceipaddress STRING,
+  useragent STRING,
+  errorcode STRING,
+  errormessage STRING,
+  requestparameters STRING,
+  responseelements STRING,
+  additionaleventdata STRING,
+  requestid STRING,
+  eventid STRING,
+  resources ARRAY<STRUCT<arn: STRING, accountid: STRING, type: STRING>>,
+  eventtype STRING,
+  readonly STRING,
+  recipientaccountid STRING,
+  sharedeventid STRING
+)
+PARTITIONED BY (region STRING, `date` STRING)
+ROW FORMAT SERDE 'org.apache.hive.hcatalog.data.JsonSerDe'
+STORED AS INPUTFORMAT 'com.amazon.emr.cloudtrail.CloudTrailInputFormat'
+OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION 's3://${bucket}/AWSLogs/${account_id}/CloudTrail/'
+TBLPROPERTIES (
+  'projection.enabled' = 'true',
+  'projection.region.type' = 'enum',
+  'projection.region.values' = '${regions}',
+  'projection.date.type' = 'date',
+  'projection.date.format' = 'yyyy/MM/dd',
+  'projection.date.range' = '${date_start},NOW',
+  'projection.date.interval' = '1',
+  'projection.date.interval.unit' = 'DAYS',
+  'storage.location.template' = 's3://${bucket}/AWSLogs/${account_id}/CloudTrail/$${region}/$${date}'
+);

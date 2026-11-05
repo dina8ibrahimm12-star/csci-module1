@@ -1,0 +1,14 @@
+# Copy to terraform.tfvars (git-ignored) and fill in. NO credentials here.
+logs_bucket_name = "csci-logs-<ACCOUNT_ID>" # = output "logs_bucket" of infra/evidence
+
+# Safe defaults: no EC2 until the team approves.
+create_web_server = false
+
+# Set to false if the account already has a Config recorder or delivery channel
+# (RUNBOOK step 5 shows how to check).
+create_config_recorder = true
+create_flow_logs       = true
+
+# Optional budget alert via Terraform (or create it in the console, RUNBOOK step 4).
+create_budget = false
+# alert_email = "you@example.com"
