@@ -6,5 +6,5 @@
 - SQS change feed verified for S1 and S3 (CloudTrail + Config events). DLQ=0. IAM events (S2) do NOT arrive: not in eu-north-1 CloudTrail, not in Config, not in queue; they exist in us-east-1 CloudTrail (lookup-events --region us-east-1 works).
 - Athena works: table csci_logs.cloudtrail_logs (partition column needs backticks in CREATE, double quotes in SELECT). Workgroup csci-wg.
 - Real event shapes captured -> docs/data-model.md written. Hand-over notes -> docs/HANDOVER.md.
-- TODO: git init + push to GitHub (commit .terraform.lock.hcl); export evidence for report; send snapshots + queue URL privately to team; (team decision) start EC2 only when needed.
+- DONE: pushed to GitHub (main), lock files committed. TODO: export evidence for report; send snapshots + queue URL privately to team; (team decision) start EC2 only when needed.
 - Rules: no apply/destroy without team approval; no keys in files/GitHub; do not read SQS repeatedly (5 receives -> DLQ).
